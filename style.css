@@ -358,17 +358,17 @@ em { font-style: italic; color: var(--orange); }
   opacity: .35;
   animation: chevDrift 14s linear infinite;
 }
-.hero__chevrons span:nth-child(1) { top: 18%; right: -160px; animation-delay: 0s; }
-.hero__chevrons span:nth-child(2) { top: 38%; right: -260px; transform: scale(.7); opacity: .22; animation-delay: -3s; }
-.hero__chevrons span:nth-child(3) { top: 62%; right: -200px; transform: scale(.85); opacity: .28; animation-delay: -6s; }
-.hero__chevrons span:nth-child(4) { top: 82%; right: -300px; transform: scale(.6); opacity: .2; animation-delay: -9s; }
-.hero__chevrons span:nth-child(5) { top: 8%; right: -360px; transform: scale(1.2); opacity: .18; animation-delay: -11s; }
+.hero__chevrons span:nth-child(1) { top: 18%; left: -160px; animation-delay: 0s; }
+.hero__chevrons span:nth-child(2) { top: 38%; left: -260px; transform: scale(.7); opacity: .22; animation-delay: -3s; }
+.hero__chevrons span:nth-child(3) { top: 62%; left: -200px; transform: scale(.85); opacity: .28; animation-delay: -6s; }
+.hero__chevrons span:nth-child(4) { top: 82%; left: -300px; transform: scale(.6); opacity: .2; animation-delay: -9s; }
+.hero__chevrons span:nth-child(5) { top: 8%; left: -360px; transform: scale(1.2); opacity: .18; animation-delay: -11s; }
 
 @keyframes chevDrift {
   0%   { transform: translateX(0)   scale(var(--s, 1)); opacity: 0; }
   10%  { opacity: var(--o, .35); }
   90%  { opacity: var(--o, .35); }
-  100% { transform: translateX(-130vw) scale(var(--s, 1)); opacity: 0; }
+  100% { transform: translateX(130vw) scale(var(--s, 1)); opacity: 0; }
 }
 
 .hero__inner {
@@ -497,8 +497,7 @@ em { font-style: italic; color: var(--orange); }
   z-index: -1;
 }
 .hero__card::after {
-  /* speed lines on left */
-  content: "";
+  content: none;
   position: absolute;
   left: -18px; top: 50%;
   transform: translateY(-50%);
@@ -520,7 +519,7 @@ em { font-style: italic; color: var(--orange); }
   margin-bottom: 8px;
 }
 .hero__card-number {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 12px;
   color: var(--white);
@@ -559,6 +558,9 @@ em { font-style: italic; color: var(--orange); }
   text-transform: uppercase;
 }
 .hero__card-footer .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--white); display: inline-block; }
+@media (min-width: 901px) {
+  .hero__card-number { font-size: clamp(1.6rem, 2.8vw, 2.0rem); }
+}
 
 @keyframes cardIn {
   from { transform: rotate(-3deg) translateY(40px); }
