@@ -711,6 +711,7 @@ em { font-style: italic; color: var(--orange); }
   background: var(--white);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
+  box-shadow: 0 4px 20px rgba(16,36,63,.09);
   transition: transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s var(--ease);
   overflow: hidden;
   isolation: isolate;
@@ -729,7 +730,7 @@ em { font-style: italic; color: var(--orange); }
 }
 .service-card:hover {
   transform: translateY(-6px);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-lg);
   border-color: rgba(249, 115, 22, .25);
 }
 .service-card:hover::before { opacity: 1; }
@@ -741,7 +742,7 @@ em { font-style: italic; color: var(--orange); }
   font-weight: 800;
   font-style: italic;
   font-size: 14px;
-  color: var(--line);
+  color: rgba(229, 233, 238, .5);
   letter-spacing: -0.02em;
   transition: color .3s var(--ease);
 }
