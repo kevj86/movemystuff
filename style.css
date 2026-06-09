@@ -967,6 +967,8 @@ em { font-style: italic; color: var(--orange); }
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 .review::before {
   content: "“";
@@ -982,6 +984,7 @@ em { font-style: italic; color: var(--orange); }
 }
 .review__stars { display: inline-flex; gap: 4px; color: var(--orange); margin-bottom: 18px; }
 .review blockquote {
+  flex: 1;
   margin: 0 0 22px;
   font-family: var(--font-display);
   font-weight: 500;
@@ -990,6 +993,7 @@ em { font-style: italic; color: var(--orange); }
   color: var(--navy);
   letter-spacing: -0.005em;
 }
+.review__blockquote--sm { font-size: .82rem !important; line-height: 1.6 !important; }
 .review figcaption { display: flex; flex-direction: column; gap: 2px; padding-top: 18px; border-top: 1px solid var(--line); }
 .review figcaption strong { font-family: var(--font-display); font-weight: 700; font-size: 14px; }
 .review figcaption span { color: var(--muted); font-size: 13px; }
