@@ -153,6 +153,34 @@
     });
   }
 
+  /* ---------- Work carousel ---------- */
+  const carousel = $('#workCarousel');
+  if (carousel) {
+    const track = carousel.querySelector('.wc-track');
+    const dots  = [...carousel.querySelectorAll('.wc-dot')];
+    const total = dots.length;
+    let idx = 0;
+
+    const goTo = (n) => {
+      idx = (n + total) % total;
+      track.style.transform = `translateX(-${idx * 100}%)`;
+      dots.forEach((d, i) => d.classList.toggle('wc-dot--active', i === idx));
+      dots.forEach((d, i) => d.setAttribute('aria-selected', i === idx));
+    };
+
+    carousel.querySelector('.wc-btn--prev').addEventListener('click', () => goTo(idx - 1));
+    carousel.querySelector('.wc-btn--next').addEventListener('click', () => goTo(idx + 1));
+    dots.forEach((d, i) => d.addEventListener('click', () => goTo(i)));
+
+    /* Swipe support */
+    let startX = 0;
+    carousel.addEventListener('pointerdown', e => { startX = e.clientX; });
+    carousel.addEventListener('pointerup',   e => {
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) > 40) goTo(dx < 0 ? idx + 1 : idx - 1);
+    });
+  }
+
   /* ---------- Smooth-scroll offset for sticky header ---------- */
   $$('a[href^="#"]').forEach(a => {
     a.addEventListener('click', (e) => {
