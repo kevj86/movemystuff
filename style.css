@@ -1083,6 +1083,54 @@ em { font-style: italic; color: var(--orange); }
 
 .contact-form__fineprint { margin: 16px 0 0; color: var(--muted); font-size: 12.5px; line-height: 1.5; }
 
+.field--checks { gap: 10px; }
+.field-group-label {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: .02em;
+  color: var(--navy);
+}
+.check-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 16px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  cursor: pointer;
+  transition: border-color .2s var(--ease), background .2s var(--ease);
+}
+.check-option:hover { border-color: var(--orange); background: var(--white); }
+.check-option:has(input:checked) { border-color: var(--orange); background: var(--orange-soft, #fff7ed); }
+.check-option input[type="checkbox"] { position: absolute; opacity: 0; width: 0; height: 0; }
+.check-box {
+  flex-shrink: 0;
+  width: 20px; height: 20px;
+  border: 2px solid var(--line);
+  border-radius: 5px;
+  background: var(--white);
+  position: relative;
+  transition: border-color .2s var(--ease), background .2s var(--ease);
+}
+.check-option input:checked ~ .check-box {
+  border-color: var(--orange);
+  background: var(--orange);
+}
+.check-option input:checked ~ .check-box::after {
+  content: "";
+  position: absolute;
+  left: 5px; top: 2px;
+  width: 6px; height: 10px;
+  border: 2.5px solid var(--white);
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+.check-text { font-size: 14px; color: var(--muted); line-height: 1.4; }
+.check-option:has(input:checked) .check-text { color: var(--navy); }
+
 /* ---------- Footer ---------- */
 .site-footer {
   background: #0E1A30;

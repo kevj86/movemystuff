@@ -128,12 +128,17 @@
       const job     = $('#f-job').value.trim();
       const message = $('#f-message').value.trim();
 
+      const serviceLabels = [];
+      if ($('#f-service-1man').checked)    serviceLabels.push('1 Man & Van (customer helps load/unload)');
+      if ($('#f-service-2person').checked) serviceLabels.push('2 Person Team (we do all the loading)');
+
       const lines = [
         `Hi Gregg — quote request via the website`,
         ``,
         `Name: ${name}`,
         `Phone: ${phone}`,
         `What needs moved: ${job}`,
+        serviceLabels.length ? `Service type: ${serviceLabels.join(', ')}` : null,
         message ? `Notes: ${message}` : null
       ].filter(Boolean).join('\n');
 
