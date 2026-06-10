@@ -1,5 +1,26 @@
 # Move My Stuff — Lanarkshire · Handoff Notes
 
+## Session date: 2026-06-10
+
+### T&Cs lightbox (commit `05a3166`)
+- Six branded Light Removals T&C graphics added to `images/terms/tc1–tc6.jpeg` (cover, customer's responsibilities, quotation, work not included, excluded property, insurance).
+- Shown in a **lightbox overlay** — prev/next arrows, page counter, swipe, Esc/arrow keys, backdrop click to close.
+- Opened from the footer "Terms & Conditions" link and the contact form fine print ("By booking, you accept our Terms & Conditions").
+- A separate `terms.html` page was also built as an alternative, demoed to Gregg, and **removed** — he chose the lightbox.
+
+### Contact form — Message placeholder
+- Replaced the Message placeholder with a four-bullet checklist (collection address/postcode/floor, drop off address/postcode/floor, rough list or photos of items, preferred date). Textarea rows bumped 4 → 6 so all bullets show.
+- **Previous placeholder (for revert):** `Postcode, dates, any access notes…`
+
+### Our Work section — lede copy change
+- Replaced the lede under "Real jobs. Real results." with:
+  > From trade waste uplifts, to old furniture and house junk — we take it all!
+  > UNSURE of an item, just ask!
+  > **SAME AS A SKIP, BUT WE DO THE WORK!**
+- **Previous lede (for revert):** `A glimpse at the kinds of jobs we tackle every week across Lanarkshire — from gentle furniture shifts to full garden green-waste runs.`
+
+---
+
 ## Session date: 2026-06-09
 
 ---
