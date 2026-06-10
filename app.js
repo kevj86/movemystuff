@@ -181,6 +181,69 @@
     });
   }
 
+  /* ---------- T&Cs lightbox ---------- */
+  const lightbox = $('#termsLightbox');
+  if (lightbox) {
+    const PAGES = [
+      'Move My Stuff — Lanarkshire light removals terms and conditions, introduction',
+      'Section 1 — Customer’s responsibilities',
+      'Section 2 — Quotation',
+      'Section 3 — Work not included in the quotation',
+      'Section 4 — Excluded property',
+      'Section 5 — Insurance'
+    ];
+    const srcFor = (i) => `images/terms/tc${i + 1}.jpeg`;
+    const img      = lightbox.querySelector('.lightbox__img');
+    const counter  = lightbox.querySelector('.lightbox__counter');
+    const closeBtn = lightbox.querySelector('.lightbox__close');
+    let page = 0;
+    let lastFocus = null;
+
+    const render = () => {
+      img.src = srcFor(page);
+      img.alt = PAGES[page];
+      counter.textContent = `${page + 1} / ${PAGES.length}`;
+    };
+    const goTo = (n) => { page = (n + PAGES.length) % PAGES.length; render(); };
+    const open = () => {
+      lastFocus = document.activeElement;
+      goTo(0);
+      lightbox.classList.add('is-open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+      PAGES.forEach((_, i) => { const pre = new Image(); pre.src = srcFor(i); });
+    };
+    const close = () => {
+      lightbox.classList.remove('is-open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (lastFocus) lastFocus.focus();
+    };
+
+    $$('[data-lightbox="terms"]').forEach(a => {
+      a.addEventListener('click', (e) => { e.preventDefault(); open(); });
+    });
+    closeBtn.addEventListener('click', close);
+    lightbox.querySelector('.lightbox__btn--prev').addEventListener('click', () => goTo(page - 1));
+    lightbox.querySelector('.lightbox__btn--next').addEventListener('click', () => goTo(page + 1));
+    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) close(); });
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('is-open')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') goTo(page - 1);
+      if (e.key === 'ArrowRight') goTo(page + 1);
+    });
+
+    /* Swipe support */
+    let lbStartX = 0;
+    lightbox.addEventListener('pointerdown', e => { lbStartX = e.clientX; });
+    lightbox.addEventListener('pointerup',   e => {
+      const dx = e.clientX - lbStartX;
+      if (Math.abs(dx) > 40) goTo(dx < 0 ? page + 1 : page - 1);
+    });
+  }
+
   /* ---------- Smooth-scroll offset for sticky header ---------- */
   $$('a[href^="#"]').forEach(a => {
     a.addEventListener('click', (e) => {
