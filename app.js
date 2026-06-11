@@ -181,38 +181,55 @@
     });
   }
 
-  /* ---------- T&Cs lightbox ---------- */
-  const lightbox = $('#termsLightbox');
+  /* ---------- Image lightbox (T&Cs + FAQs) ---------- */
+  const lightbox = $('#imageLightbox');
   if (lightbox) {
-    const PAGES = [
-      'Move My Stuff — Lanarkshire light removals terms and conditions, introduction',
-      'Section 1 — Customer’s responsibilities',
-      'Section 2 — Quotation',
-      'Section 3 — Work not included in the quotation',
-      'Section 4 — Excluded property',
-      'Section 5 — Insurance'
-    ];
-    const srcFor = (i) => `images/terms/tc${i + 1}.jpeg`;
+    const SETS = {
+      terms: {
+        label: 'Terms and conditions',
+        srcFor: (i) => `images/terms/tc${i + 1}.jpeg`,
+        pages: [
+          'Move My Stuff — Lanarkshire light removals terms and conditions, introduction',
+          'Section 1 — Customer’s responsibilities',
+          'Section 2 — Quotation',
+          'Section 3 — Work not included in the quotation',
+          'Section 4 — Excluded property',
+          'Section 5 — Insurance'
+        ]
+      },
+      faq: {
+        label: 'Frequently asked questions',
+        srcFor: (i) => `images/faq/faq${i + 1}.jpeg`,
+        pages: [
+          'FAQs 1 to 4 — services offered, where the waste goes, waste carrier licence, couch and mattress uplifts',
+          'FAQs 5 to 8 — pricing for uplifts, scrap collection, vehicle load space, payment methods',
+          'FAQs 9 to 12 — removal quotes between two addresses, jobs around your work hours, asbestos garages, taking waste to the local tip'
+        ]
+      }
+    };
     const img      = lightbox.querySelector('.lightbox__img');
     const counter  = lightbox.querySelector('.lightbox__counter');
     const closeBtn = lightbox.querySelector('.lightbox__close');
+    let set = SETS.terms;
     let page = 0;
     let lastFocus = null;
 
     const render = () => {
-      img.src = srcFor(page);
-      img.alt = PAGES[page];
-      counter.textContent = `${page + 1} / ${PAGES.length}`;
+      img.src = set.srcFor(page);
+      img.alt = set.pages[page];
+      counter.textContent = `${page + 1} / ${set.pages.length}`;
     };
-    const goTo = (n) => { page = (n + PAGES.length) % PAGES.length; render(); };
-    const open = () => {
+    const goTo = (n) => { page = (n + set.pages.length) % set.pages.length; render(); };
+    const open = (name) => {
+      set = SETS[name] || SETS.terms;
+      lightbox.setAttribute('aria-label', set.label);
       lastFocus = document.activeElement;
       goTo(0);
       lightbox.classList.add('is-open');
       lightbox.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
       closeBtn.focus();
-      PAGES.forEach((_, i) => { const pre = new Image(); pre.src = srcFor(i); });
+      set.pages.forEach((_, i) => { const pre = new Image(); pre.src = set.srcFor(i); });
     };
     const close = () => {
       lightbox.classList.remove('is-open');
@@ -221,8 +238,8 @@
       if (lastFocus) lastFocus.focus();
     };
 
-    $$('[data-lightbox="terms"]').forEach(a => {
-      a.addEventListener('click', (e) => { e.preventDefault(); open(); });
+    $$('[data-lightbox]').forEach(a => {
+      a.addEventListener('click', (e) => { e.preventDefault(); open(a.dataset.lightbox); });
     });
     closeBtn.addEventListener('click', close);
     lightbox.querySelector('.lightbox__btn--prev').addEventListener('click', () => goTo(page - 1));

@@ -1,5 +1,18 @@
 # Move My Stuff — Lanarkshire · Handoff Notes
 
+## Session date: 2026-06-11
+
+### FAQ lightbox
+- Three branded FAQ graphics (12 questions) pulled from GitHub upload, renamed `images/faq/faq1–faq3.jpeg` (git renames, history preserved).
+- T&Cs lightbox in `app.js` generalised into a shared image lightbox (`#imageLightbox`, was `#termsLightbox`) driven by a `SETS` map — `data-lightbox="terms"` and `data-lightbox="faq"` open the respective set with correct alts, counter, and dialog label.
+- FAQ triggers: orange **"More questions? Read our FAQs"** button in the Straight Talk section (`.dont-do__faq-btn`), and an **FAQs** link next to Terms & Conditions in the footer bottom row.
+
+### Hero card speed lines — removed for good
+- The disabled `::after` speed lines were investigated: they never showed because `overflow: hidden` on `.hero__card` clipped them. Tried a fixed version (horizontal streaks, then animated) — didn't earn its place, so the `::after` block and its orange-theme override were **deleted entirely**.
+- **Side effect kept:** `overflow: hidden` was removed from `.hero__card`, which un-clipped the `::before` chevron — the card's right edge now shows its intended arrow point. If the chevron is unwanted, re-add `overflow: hidden` to `.hero__card` (or delete the `::before` block).
+
+---
+
 ## Session date: 2026-06-10
 
 ### T&Cs lightbox (commit `05a3166`)
@@ -75,9 +88,6 @@ The carousel was discussed as potentially becoming a "carousel cards" style (sho
 ### Contact form — no backend yet
 Submissions route to email/WhatsApp via `mailto:` and `wa.me` links. Options for a proper backend:
 - **Formspree or Web3Forms** — easiest, no server needed, free tier sufficient. Just add an `action` URL to the `<form>` tag.
-
-### Speed lines on hero card
-The `::after` speed lines decoration was disabled (`content: none`) rather than deleted. Can be re-enabled by changing back to `content: ""`.
 
 ### Review names
 The reviewer names and locations on cards 2 and 3 are still placeholders (David R. / East Kilbride, Aisha K. / Wishaw). Update when real names are available.
