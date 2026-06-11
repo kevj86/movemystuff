@@ -494,6 +494,10 @@ em { font-style: italic; color: var(--orange); }
   clip-path: polygon(0 0, 60% 0, 100% 50%, 60% 100%, 0 100%);
   z-index: -1;
 }
+@media (max-width: 900px) {
+  /* full-width card — chevron tip would poke past the viewport */
+  .hero__card::before { content: none; }
+}
 .hero__card-eyebrow {
   font-family: var(--font-display);
   font-weight: 700;
