@@ -91,6 +91,10 @@
   if (form) {
     const PHONE_WA = '447850694243';
     const EMAIL    = 'getintouch@movemystuff.info';
+    /* Web3Forms access key (https://web3forms.com — free, key arrives by
+       email after verifying getintouch@movemystuff.info). While empty,
+       the email route falls back to a mailto: link. */
+    const WEB3FORMS_KEY = '';
 
     let route = 'email';
     $$('button[data-route]', form).forEach(btn => {
@@ -145,11 +149,53 @@
       if (route === 'whatsapp') {
         const url = `https://wa.me/${PHONE_WA}?text=${encodeURIComponent(lines)}`;
         window.open(url, '_blank', 'noopener');
-      } else {
-        const subject = `Quote request from ${name}`;
+        return;
+      }
+
+      const subject = `Quote request from ${name}`;
+
+      if (!WEB3FORMS_KEY) {
         const url = `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines)}`;
         window.location.href = url;
+        return;
       }
+
+      const status  = $('#formStatus');
+      const buttons = $$('.contact-form__actions .btn', form);
+      const showStatus = (msg, ok) => {
+        status.textContent = msg;
+        status.hidden = false;
+        status.classList.toggle('is-error', !ok);
+      };
+      const setSending = (on) => buttons.forEach(b => { b.disabled = on; });
+
+      setSending(true);
+      status.hidden = true;
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          subject,
+          from_name: 'Move My Stuff website',
+          botcheck: $('#f-botcheck') ? $('#f-botcheck').checked : false,
+          name,
+          phone,
+          'What needs moved': job,
+          'Service type': serviceLabels.length ? serviceLabels.join(', ') : 'Not specified',
+          'Notes': message || '—'
+        })
+      })
+        .then(r => r.json())
+        .then(data => {
+          if (!data.success) throw new Error(data.message || 'Send failed');
+          form.reset();
+          showStatus('Thanks — your message is on its way. Gregg will get back to you soon.', true);
+        })
+        .catch(() => {
+          showStatus("Sorry — that didn't send. Please try WhatsApp instead, or call 07850 694243.", false);
+        })
+        .finally(() => setSending(false));
     });
   }
 

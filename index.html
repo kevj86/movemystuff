@@ -641,6 +641,8 @@
     </div>
 
     <form class="contact-form" id="contactForm" novalidate>
+      <!-- Honeypot — humans never see this; bots that tick it get binned -->
+      <input type="checkbox" id="f-botcheck" name="botcheck" class="contact-form__hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
       <h3 class="contact-form__title">Send a quick message</h3>
       <p class="contact-form__sub">We'll route this through your email or WhatsApp — your choice.</p>
 
@@ -685,6 +687,8 @@
           Send via WhatsApp
         </button>
       </div>
+
+      <p class="contact-form__status" id="formStatus" role="status" hidden></p>
 
       <p class="contact-form__fineprint">By sending, you're happy for us to get back to you on the details above. We don't share your info with anyone. By booking, you accept our <a href="#" data-lightbox="terms">Terms &amp; Conditions</a>.</p>
     </form>

@@ -85,9 +85,11 @@ Single `index.html` + `style.css` + `app.js`. No JS framework. Hosted on GitHub 
 ### Carousel — card style
 The carousel was discussed as potentially becoming a "carousel cards" style (showing multiple images at once). This was interrupted mid-change — the current carousel shows one image at a time. Can revisit.
 
-### Contact form — no backend yet
-Submissions route to email/WhatsApp via `mailto:` and `wa.me` links. Options for a proper backend:
-- **Formspree or Web3Forms** — easiest, no server needed, free tier sufficient. Just add an `action` URL to the `<form>` tag.
+### Contact form — Web3Forms backend prepped, needs access key
+The email route is wired for **Web3Forms** but dormant: `WEB3FORMS_KEY` in `app.js` is empty, so it still falls back to the old `mailto:` link. To go live:
+1. Sign up at https://web3forms.com with `getintouch@movemystuff.info` (needs access to that inbox to verify).
+2. Paste the access key into `WEB3FORMS_KEY` in `app.js`.
+Once set, email submissions POST directly from the page — buttons disable while sending, inline success/error message shows (`#formStatus`), honeypot field (`#f-botcheck`) bins bots. WhatsApp route unchanged.
 
 ### Review names
 The reviewer names and locations on cards 2 and 3 are still placeholders (David R. / East Kilbride, Aisha K. / Wishaw). Update when real names are available.
