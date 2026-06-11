@@ -865,6 +865,11 @@ em { font-style: italic; color: var(--orange); }
 /* ---------- What we don't do ---------- */
 .dont-do { background: var(--surface); }
 .dont-do__faq-btn { margin-top: 26px; }
+.dont-do__faq-btn--mobile { display: none; }
+@media (max-width: 900px) {
+  .dont-do__faq-btn--desktop { display: none; }
+  .dont-do__faq-btn--mobile { display: flex; width: 100%; margin-top: 0; }
+}
 .dont-do__inner {
   display: grid;
   grid-template-columns: 1fr 1.1fr;
