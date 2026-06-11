@@ -483,7 +483,6 @@ em { font-style: italic; color: var(--orange); }
   box-shadow: var(--shadow-lg);
   animation: cardIn 1s .55s var(--ease-out) both;
   isolation: isolate;
-  overflow: hidden;
 }
 .hero__card::before {
   /* chevron arrow on right */
@@ -494,18 +493,6 @@ em { font-style: italic; color: var(--orange); }
   background: var(--orange);
   clip-path: polygon(0 0, 60% 0, 100% 50%, 60% 100%, 0 100%);
   z-index: -1;
-}
-.hero__card::after {
-  content: none;
-  position: absolute;
-  left: -18px; top: 50%;
-  transform: translateY(-50%);
-  width: 30px; height: 60%;
-  background:
-    linear-gradient(180deg, transparent, var(--white) 20%, var(--white) 80%, transparent) left center / 4px 18px no-repeat,
-    linear-gradient(180deg, transparent, var(--white) 20%, var(--white) 80%, transparent) center / 4px 32px no-repeat,
-    linear-gradient(180deg, transparent, var(--white) 20%, var(--white) 80%, transparent) right center / 4px 12px no-repeat;
-  opacity: .45;
 }
 .hero__card-eyebrow {
   font-family: var(--font-display);
@@ -1485,7 +1472,6 @@ em { font-style: italic; color: var(--orange); }
 [data-theme="orange"] .hero__card::before {
   background: var(--navy);
 }
-[data-theme="orange"] .hero__card::after { opacity: .5; }
 [data-theme="orange"] .hero__card-number svg {
   background: var(--white);
   color: var(--navy);
