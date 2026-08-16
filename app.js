@@ -94,7 +94,7 @@
     /* Web3Forms access key (https://web3forms.com — free, key arrives by
        email after verifying getintouch@movemystuff.info). While empty,
        the email route falls back to a mailto: link. */
-    const WEB3FORMS_KEY = '';
+    const WEB3FORMS_KEY = 'e8ebd5fb-5798-4cac-a381-6678217d6035';
 
     let route = 'email';
     $$('button[data-route]', form).forEach(btn => {
