@@ -1,5 +1,16 @@
 # Move My Stuff — Lanarkshire · Handoff Notes
 
+## Session date: 2026-08-16
+
+### Web3Forms email backend — now LIVE
+- Pasted the real access key into `WEB3FORMS_KEY` (`app.js:97`): `e8ebd5fb-5798-4cac-a381-6678217d6035`.
+- The contact form's **email** button now POSTs directly to `api.web3forms.com` → submissions land in **getintouch@movemystuff.info**. No more `mailto:` fallback (the fallback code stays in place and only triggers if the key is ever blanked). WhatsApp route unchanged.
+- Web3Forms keys are public by design (client-side JS); spam handled by their honeypot + the `#f-botcheck` field.
+- Committed `aba9da5` and pushed to `origin/main`.
+- **Still to verify:** send one real submission from the live site and confirm it arrives in the inbox. If the first send fails, the Web3Forms verification link in that inbox likely still needs clicking.
+
+---
+
 ## Session date: 2026-06-11
 
 ### FAQ lightbox
@@ -85,11 +96,8 @@ Single `index.html` + `style.css` + `app.js`. No JS framework. Hosted on GitHub 
 ### Carousel — card style
 The carousel was discussed as potentially becoming a "carousel cards" style (showing multiple images at once). This was interrupted mid-change — the current carousel shows one image at a time. Can revisit.
 
-### Contact form — Web3Forms backend prepped, needs access key
-The email route is wired for **Web3Forms** but dormant: `WEB3FORMS_KEY` in `app.js` is empty, so it still falls back to the old `mailto:` link. To go live:
-1. Sign up at https://web3forms.com with `getintouch@movemystuff.info` (needs access to that inbox to verify).
-2. Paste the access key into `WEB3FORMS_KEY` in `app.js`.
-Once set, email submissions POST directly from the page — buttons disable while sending, inline success/error message shows (`#formStatus`), honeypot field (`#f-botcheck`) bins bots. WhatsApp route unchanged.
+### Contact form — Web3Forms backend ✅ DONE (2026-08-16)
+Access key added and pushed live — email submissions now POST directly to Web3Forms and land in `getintouch@movemystuff.info`. See the 2026-08-16 session note above. Only outstanding item is a real end-to-end test send from the live site.
 
 ### Review names
 The reviewer names and locations on cards 2 and 3 are still placeholders (David R. / East Kilbride, Aisha K. / Wishaw). Update when real names are available.
