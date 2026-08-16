@@ -119,6 +119,22 @@
       input.addEventListener('input', () => fieldEl(input).classList.remove('invalid'));
     });
 
+    /* Reveal the crew sub-options only when "Removals" is ticked;
+       clear them when it's un-ticked so they never sneak into the message. */
+    const removalsCheck = $('#f-service-removals');
+    const removalsSub   = $('#removalsSub');
+    if (removalsCheck && removalsSub) {
+      const syncRemovalsSub = () => {
+        removalsSub.hidden = !removalsCheck.checked;
+        if (!removalsCheck.checked) {
+          $('#f-service-1man').checked = false;
+          $('#f-service-2person').checked = false;
+        }
+      };
+      removalsCheck.addEventListener('change', syncRemovalsSub);
+      syncRemovalsSub();
+    }
+
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       if (!validate()) {
@@ -133,8 +149,13 @@
       const message = $('#f-message').value.trim();
 
       const serviceLabels = [];
-      if ($('#f-service-1man').checked)    serviceLabels.push('1 Man & Van (customer helps load/unload)');
-      if ($('#f-service-2person').checked) serviceLabels.push('2 Person Team (we do all the loading)');
+      if ($('#f-service-removals').checked) {
+        const crew = [];
+        if ($('#f-service-1man').checked)    crew.push('1 Man & Van — customer helps load/unload');
+        if ($('#f-service-2person').checked) crew.push('2 Person Team — we do all the loading');
+        serviceLabels.push(crew.length ? `Removals (${crew.join(', ')})` : 'Removals');
+      }
+      if ($('#f-service-waste').checked) serviceLabels.push('Waste');
 
       const lines = [
         `Hi Gregg — quote request via the website`,

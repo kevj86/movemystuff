@@ -1161,6 +1161,16 @@ em { font-style: italic; color: var(--orange); }
 .check-text { font-size: 14px; color: var(--muted); line-height: 1.4; }
 .check-option:has(input:checked) .check-text { color: var(--navy); }
 
+/* Nested sub-options revealed when "Removals" is ticked */
+.check-subgroup {
+  display: grid;
+  gap: 10px;
+  margin-left: 14px;
+  padding-left: 14px;
+  border-left: 2px solid var(--line);
+}
+.check-subgroup[hidden] { display: none; }
+
 /* ---------- Footer ---------- */
 .site-footer {
   background: #0E1A30;
