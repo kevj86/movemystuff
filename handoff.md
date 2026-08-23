@@ -1,5 +1,41 @@
 # Move My Stuff — Lanarkshire · Handoff Notes
 
+## Session date: 2026-08-23
+
+### Contact form — rebuilt as a branching quote form
+The form now asks only what's relevant to the job type. Order: **Name → Phone → Service type → branch fields.**
+
+**Service type** is two options, **mutually exclusive** — pick one:
+- Removals / Man & Van
+- Waste Uplift / Clearance
+
+They're `<input type="radio">` under `name="service_type"`, styled with the existing `.check-option` / `.check-box` rules so they still *look* like the tick-boxes Gregg signed off on. Radios give native one-at-a-time behaviour and correct semantics — no JS needed to enforce it. (`.check-option input[type="checkbox"]` in `style.css` was broadened to `.check-option input` so radios get hidden too.)
+
+Nothing below the service type shows until one is picked (`#jobFields` is `hidden`).
+
+**Removals branch:**
+- Collection address (inc. floor) & postcode
+- Drop off address (inc. floor) & postcode
+- Rough list of items you're looking to move
+- Does this move need… 1 Man & Van / 2 Person Team (radios, `name="crew"`)
+- What date are you looking for?
+
+**Waste branch:** same minus drop off and crew, and the item-list label swaps to "Rough list of the items you're looking to have uplifted".
+
+The shared fields (collection, item list, date) are **one set of inputs reused by both branches** — only `#dropoffField` and `#crewField` toggle, and the item label/placeholder swap via the `ITEMS_COPY` map in `app.js`. Switching Removals → Waste clears the drop-off value and crew choice so they can't leak into the message body.
+
+**Removed:** the old "What you need moved" text input (`f-job`) and the free-text Message textarea (`f-message`) — the bullet-list placeholder in that textarea is now real fields. Gregg's call: no catch-all notes box, exactly the listed fields.
+
+**Validation** — all fields are required: name, phone, service type, then the branch's fields (crew included for Removals). Invalid fields go red; check groups redden their option cards via the new `.field--checks.invalid` rules, since the real input is visually hidden. First invalid field scrolls into view on a failed submit.
+
+**Message body / Web3Forms payload** rebuilt to match: `Service type`, `Collection address`, `Drop off address`, `Items`, `Crew`, `Preferred date`. Email subject now includes the service type. Same for the WhatsApp text.
+
+**CSS added:** `.field[hidden] { display: none }` (needed — `.field` is `display: grid`, which beats the UA `[hidden]` rule), `.field--compact textarea { min-height: 76px }` for the address boxes, and the `.field--checks.invalid` states. Dead `.check-subgroup` rules removed.
+
+**Not yet done:** no browser test of the new form — worth a click-through of both branches plus one real send.
+
+---
+
 ## Session date: 2026-08-16
 
 ### Web3Forms email backend — now LIVE
@@ -93,14 +129,14 @@ Single `index.html` + `style.css` + `app.js`. No JS framework. Hosted on GitHub 
 
 ## Pending / future work
 
-### Carousel — card style
-The carousel was discussed as potentially becoming a "carousel cards" style (showing multiple images at once). This was interrupted mid-change — the current carousel shows one image at a time. Can revisit.
+### Carousel — card style — settled 2026-08-23
+A multi-image "carousel cards" style was discussed, then dropped. **One large image at a time is the final call.** Don't re-propose it.
 
 ### Contact form — Web3Forms backend ✅ DONE (2026-08-16)
 Access key added and pushed live — email submissions now POST directly to Web3Forms and land in `getintouch@movemystuff.info`. See the 2026-08-16 session note above. Only outstanding item is a real end-to-end test send from the live site.
 
-### Review names
-The reviewer names and locations on cards 2 and 3 are still placeholders (David R. / East Kilbride, Aisha K. / Wishaw). Update when real names are available.
+### Review names — settled 2026-08-23
+Names and locations on all three review cards (Lauren M. / Hamilton, David R. / East Kilbride, Aisha K. / Wishaw) are **final**. Not placeholders — leave them as they are.
 
 ---
 

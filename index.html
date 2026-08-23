@@ -654,40 +654,56 @@
         <label for="f-phone">Phone</label>
         <input type="tel" id="f-phone" name="phone" autocomplete="tel" inputmode="tel" required />
       </div>
-      <div class="field">
-        <label for="f-job">What you need moved</label>
-        <input type="text" id="f-job" name="job" placeholder="e.g. 2-seater sofa, shed clear-out, 1-bed flat move" required />
-      </div>
-      <div class="field field--checks">
+      <div class="field field--checks" id="serviceTypeField">
         <span class="field-group-label">Service type</span>
         <label class="check-option">
-          <input type="checkbox" id="f-service-removals" name="service_removals">
+          <input type="radio" name="service_type" id="f-service-removals" value="Removals / Man &amp; Van">
           <span class="check-box" aria-hidden="true"></span>
-          <span class="check-text"><strong>Removals</strong></span>
+          <span class="check-text"><strong>Removals / Man &amp; Van</strong></span>
         </label>
         <label class="check-option">
-          <input type="checkbox" id="f-service-waste" name="service_waste">
+          <input type="radio" name="service_type" id="f-service-waste" value="Waste Uplift / Clearance">
           <span class="check-box" aria-hidden="true"></span>
-          <span class="check-text"><strong>Waste</strong></span>
+          <span class="check-text"><strong>Waste Uplift / Clearance</strong></span>
         </label>
+      </div>
 
-        <div class="check-subgroup" id="removalsSub" hidden>
+      <!-- Job details — revealed once a service type is picked.
+           Drop off + crew are Removals-only; the rest are shared. -->
+      <div id="jobFields" hidden>
+        <div class="field field--compact">
+          <label for="f-collection">Collection address (inc. floor) &amp; postcode</label>
+          <textarea id="f-collection" name="collection" rows="2" placeholder="e.g. Flat 2/1, 12 Main Street, Hamilton, ML3 6AB"></textarea>
+        </div>
+
+        <div class="field field--compact" id="dropoffField" hidden>
+          <label for="f-dropoff">Drop off address (inc. floor) &amp; postcode</label>
+          <textarea id="f-dropoff" name="dropoff" rows="2" placeholder="e.g. 4 Oak Drive, ground floor, East Kilbride, G74 2XY"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="f-items" id="itemsLabel">Rough list of items you're looking to move</label>
+          <textarea id="f-items" name="items" rows="4" placeholder="e.g. 3-seater sofa, double bed, washing machine, 15 boxes"></textarea>
+        </div>
+
+        <div class="field field--checks" id="crewField" hidden>
+          <span class="field-group-label">Does this move need&hellip;</span>
           <label class="check-option">
-            <input type="checkbox" id="f-service-1man" name="service_1man">
+            <input type="radio" name="crew" id="f-crew-1man" value="1 Man &amp; Van — customer helps load/unload">
             <span class="check-box" aria-hidden="true"></span>
             <span class="check-text"><strong>1 Man &amp; Van</strong> — Customer helps load / unload</span>
           </label>
           <label class="check-option">
-            <input type="checkbox" id="f-service-2person" name="service_2person">
+            <input type="radio" name="crew" id="f-crew-2person" value="2 Person Team — we do all the loading">
             <span class="check-box" aria-hidden="true"></span>
             <span class="check-text"><strong>2 Person Team</strong> — We do all the loading</span>
           </label>
         </div>
-      </div>
 
-      <div class="field">
-        <label for="f-message">Message</label>
-        <textarea id="f-message" name="message" rows="6" placeholder="• Collection address, postcode &amp; floor&#10;• Drop off address, postcode &amp; floor&#10;• Rough list or photos of items you're looking to be removed&#10;• What date are you looking for?"></textarea>
+        <div class="field">
+          <label for="f-date">What date are you looking for?</label>
+          <input type="text" id="f-date" name="date" placeholder="e.g. Sat 6th Sept, or any weekday next week" />
+        </div>
       </div>
 
       <div class="contact-form__actions">

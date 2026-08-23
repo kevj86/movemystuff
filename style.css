@@ -1061,6 +1061,7 @@ em { font-style: italic; color: var(--orange); }
 .contact-form__sub { color: var(--muted); margin: 0 0 24px; font-size: 14.5px; }
 
 .field { display: grid; gap: 6px; margin-bottom: 16px; }
+.field[hidden] { display: none; }
 .field label {
   font-family: var(--font-display);
   font-weight: 600;
@@ -1087,6 +1088,7 @@ em { font-style: italic; color: var(--orange); }
   box-shadow: 0 0 0 4px var(--orange-soft);
 }
 .field textarea { resize: vertical; min-height: 110px; font-family: var(--font-body); }
+.field--compact textarea { min-height: 76px; }
 .field.invalid input,
 .field.invalid textarea { border-color: #dc2626; background: #fef2f2; }
 
@@ -1134,7 +1136,7 @@ em { font-style: italic; color: var(--orange); }
 }
 .check-option:hover { border-color: var(--orange); background: var(--white); }
 .check-option:has(input:checked) { border-color: var(--orange); background: var(--orange-soft, #fff7ed); }
-.check-option input[type="checkbox"] { position: absolute; opacity: 0; width: 0; height: 0; }
+.check-option input { position: absolute; opacity: 0; width: 0; height: 0; }
 .check-box {
   flex-shrink: 0;
   width: 20px; height: 20px;
@@ -1161,15 +1163,9 @@ em { font-style: italic; color: var(--orange); }
 .check-text { font-size: 14px; color: var(--muted); line-height: 1.4; }
 .check-option:has(input:checked) .check-text { color: var(--navy); }
 
-/* Nested sub-options revealed when "Removals" is ticked */
-.check-subgroup {
-  display: grid;
-  gap: 10px;
-  margin-left: 14px;
-  padding-left: 14px;
-  border-left: 2px solid var(--line);
-}
-.check-subgroup[hidden] { display: none; }
+/* Nothing to redden on a check group otherwise — the input itself is hidden */
+.field--checks.invalid .check-option { border-color: #dc2626; background: #fef2f2; }
+.field--checks.invalid .check-box { border-color: #dc2626; }
 
 /* ---------- Footer ---------- */
 .site-footer {

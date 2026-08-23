@@ -101,82 +101,131 @@
       btn.addEventListener('click', () => { route = btn.dataset.route; });
     });
 
+    const jobFields    = $('#jobFields');
+    const dropoffField = $('#dropoffField');
+    const crewField    = $('#crewField');
+    const itemsLabel   = $('#itemsLabel');
+    const itemsInput   = $('#f-items');
+    const serviceField = $('#serviceTypeField');
+
+    const serviceRadios = $$('input[name="service_type"]', form);
+    const crewRadios    = $$('input[name="crew"]', form);
+    const pickedService = () => serviceRadios.find(r => r.checked) || null;
+    const pickedCrew    = () => crewRadios.find(r => r.checked) || null;
+    const isRemovals    = () => $('#f-service-removals').checked;
+
+    /* The item list is shared by both branches — only its wording changes. */
+    const ITEMS_COPY = {
+      removals: {
+        label: "Rough list of items you're looking to move",
+        placeholder: 'e.g. 3-seater sofa, double bed, washing machine, 15 boxes'
+      },
+      waste: {
+        label: "Rough list of the items you're looking to have uplifted",
+        placeholder: 'e.g. old wardrobe, garden waste, 2 mattresses, general junk'
+      }
+    };
+
+    /* Show the job questions once a service type is picked; drop off and
+       crew are Removals-only and get cleared when Waste is chosen so they
+       can never leak into the message body. */
+    const syncBranch = () => {
+      const picked   = pickedService();
+      const removals = !!picked && isRemovals();
+
+      jobFields.hidden    = !picked;
+      dropoffField.hidden = !removals;
+      crewField.hidden    = !removals;
+
+      if (!removals) {
+        $('#f-dropoff').value = '';
+        crewRadios.forEach(r => { r.checked = false; });
+        dropoffField.classList.remove('invalid');
+        crewField.classList.remove('invalid');
+      }
+
+      const copy = removals ? ITEMS_COPY.removals : ITEMS_COPY.waste;
+      itemsLabel.textContent = copy.label;
+      itemsInput.placeholder = copy.placeholder;
+    };
+    serviceRadios.forEach(r => r.addEventListener('change', syncBranch));
+    syncBranch();
+
     const fieldEl = (input) => input.closest('.field');
+    const mark    = (el, valid) => { el.classList.toggle('invalid', !valid); return valid; };
+    const filled  = (id) => $('#' + id).value.trim().length > 0;
+
     const validate = () => {
       let ok = true;
-      ['f-name', 'f-phone', 'f-job'].forEach(id => {
-        const input = $(`#${id}`);
-        const fEl = fieldEl(input);
-        const valid = input.value.trim().length > 0;
-        fEl.classList.toggle('invalid', !valid);
-        if (!valid) ok = false;
-      });
+      const check = (el, valid) => { if (!mark(el, valid)) ok = false; };
+
+      ['f-name', 'f-phone'].forEach(id => check(fieldEl($('#' + id)), filled(id)));
+      check(serviceField, !!pickedService());
+
+      if (pickedService()) {
+        const removals = isRemovals();
+        const needed   = ['f-collection', 'f-items', 'f-date'];
+        if (removals) needed.push('f-dropoff');
+        needed.forEach(id => check(fieldEl($('#' + id)), filled(id)));
+        if (removals) check(crewField, !!pickedCrew());
+      }
       return ok;
     };
 
-    ['f-name', 'f-phone', 'f-job'].forEach(id => {
-      const input = $(`#${id}`);
-      input.addEventListener('input', () => fieldEl(input).classList.remove('invalid'));
+    /* Clear the red state as soon as the customer fixes a field. */
+    $$('.field input, .field textarea', form).forEach(input => {
+      const clear = () => { const f = fieldEl(input); if (f) f.classList.remove('invalid'); };
+      input.addEventListener('input', clear);
+      input.addEventListener('change', clear);
     });
-
-    /* Reveal the crew sub-options only when "Removals" is ticked;
-       clear them when it's un-ticked so they never sneak into the message. */
-    const removalsCheck = $('#f-service-removals');
-    const removalsSub   = $('#removalsSub');
-    if (removalsCheck && removalsSub) {
-      const syncRemovalsSub = () => {
-        removalsSub.hidden = !removalsCheck.checked;
-        if (!removalsCheck.checked) {
-          $('#f-service-1man').checked = false;
-          $('#f-service-2person').checked = false;
-        }
-      };
-      removalsCheck.addEventListener('change', syncRemovalsSub);
-      syncRemovalsSub();
-    }
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       if (!validate()) {
-        const firstInvalid = $('.field.invalid input, .field.invalid textarea');
-        if (firstInvalid) firstInvalid.focus();
+        const firstInvalid = $('.field.invalid', form);
+        if (firstInvalid) {
+          firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          const target = firstInvalid.querySelector('textarea, input:not([type="radio"])')
+                      || firstInvalid.querySelector('input[type="radio"]');
+          if (target) target.focus({ preventScroll: true });
+        }
         return;
       }
 
-      const name    = $('#f-name').value.trim();
-      const phone   = $('#f-phone').value.trim();
-      const job     = $('#f-job').value.trim();
-      const message = $('#f-message').value.trim();
-
-      const serviceLabels = [];
-      if ($('#f-service-removals').checked) {
-        const crew = [];
-        if ($('#f-service-1man').checked)    crew.push('1 Man & Van — customer helps load/unload');
-        if ($('#f-service-2person').checked) crew.push('2 Person Team — we do all the loading');
-        serviceLabels.push(crew.length ? `Removals (${crew.join(', ')})` : 'Removals');
-      }
-      if ($('#f-service-waste').checked) serviceLabels.push('Waste');
+      const removals   = isRemovals();
+      const name       = $('#f-name').value.trim();
+      const phone      = $('#f-phone').value.trim();
+      const service    = pickedService().value;
+      const collection = $('#f-collection').value.trim();
+      const dropoff    = removals ? $('#f-dropoff').value.trim() : '';
+      const items      = $('#f-items').value.trim();
+      const crew       = removals && pickedCrew() ? pickedCrew().value : '';
+      const date       = $('#f-date').value.trim();
 
       const lines = [
-        `Hi Gregg — quote request via the website`,
-        ``,
-        `Name: ${name}`,
-        `Phone: ${phone}`,
-        `What needs moved: ${job}`,
-        serviceLabels.length ? `Service type: ${serviceLabels.join(', ')}` : null,
-        message ? `Notes: ${message}` : null
-      ].filter(Boolean).join('\n');
+        'Hi Gregg — quote request via the website',
+        '',
+        'Name: ' + name,
+        'Phone: ' + phone,
+        'Service type: ' + service,
+        '',
+        'Collection: ' + collection,
+        dropoff ? 'Drop off: ' + dropoff : null,
+        'Items: ' + items,
+        crew ? 'Crew: ' + crew : null,
+        'Preferred date: ' + date
+      ].filter(v => v !== null).join('\n');
 
       if (route === 'whatsapp') {
-        const url = `https://wa.me/${PHONE_WA}?text=${encodeURIComponent(lines)}`;
+        const url = 'https://wa.me/' + PHONE_WA + '?text=' + encodeURIComponent(lines);
         window.open(url, '_blank', 'noopener');
         return;
       }
 
-      const subject = `Quote request from ${name}`;
+      const subject = 'Quote request from ' + name + ' — ' + service;
 
       if (!WEB3FORMS_KEY) {
-        const url = `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines)}`;
+        const url = 'mailto:' + EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines);
         window.location.href = url;
         return;
       }
@@ -202,15 +251,19 @@
           botcheck: $('#f-botcheck') ? $('#f-botcheck').checked : false,
           name,
           phone,
-          'What needs moved': job,
-          'Service type': serviceLabels.length ? serviceLabels.join(', ') : 'Not specified',
-          'Notes': message || '—'
+          'Service type': service,
+          'Collection address': collection,
+          'Drop off address': dropoff || '—',
+          'Items': items,
+          'Crew': crew || '—',
+          'Preferred date': date
         })
       })
         .then(r => r.json())
         .then(data => {
           if (!data.success) throw new Error(data.message || 'Send failed');
           form.reset();
+          syncBranch();
           showStatus('Thanks — your message is on its way. Gregg will get back to you soon.', true);
         })
         .catch(() => {
