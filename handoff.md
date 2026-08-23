@@ -32,7 +32,7 @@ The shared fields (collection, item list, date) are **one set of inputs reused b
 
 **CSS added:** `.field[hidden] { display: none }` (needed — `.field` is `display: grid`, which beats the UA `[hidden]` rule), `.field--compact textarea { min-height: 76px }` for the address boxes, and the `.field--checks.invalid` states. Dead `.check-subgroup` rules removed.
 
-**Not yet done:** no browser test of the new form — worth a click-through of both branches plus one real send.
+**Tested 2026-08-23:** Kevin ran a real submission through the rebuilt form — **Send by email** delivered to getintouch@movemystuff.info. Web3Forms works with the new payload shape. The **WhatsApp** route on the new form is still untested.
 
 ---
 
@@ -43,7 +43,7 @@ The shared fields (collection, item list, date) are **one set of inputs reused b
 - The contact form's **email** button now POSTs directly to `api.web3forms.com` → submissions land in **getintouch@movemystuff.info**. No more `mailto:` fallback (the fallback code stays in place and only triggers if the key is ever blanked). WhatsApp route unchanged.
 - Web3Forms keys are public by design (client-side JS); spam handled by their honeypot + the `#f-botcheck` field.
 - Committed `aba9da5` and pushed to `origin/main`.
-- **Still to verify:** send one real submission from the live site and confirm it arrives in the inbox. If the first send fails, the Web3Forms verification link in that inbox likely still needs clicking.
+- **Verified 2026-08-23:** a real send from the live site landed in the inbox. The email backend is confirmed working end to end.
 
 ---
 
